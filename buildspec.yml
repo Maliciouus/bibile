@@ -9,6 +9,7 @@ phases:
       - export PATH="$BUN_INSTALL/bin:$PATH"
       - echo "Bun version:" && bun --version
       - cd client && bun install && cd ..
+      - cd admin && bun install && cd ..
 
   build:
     commands:
