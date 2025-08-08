@@ -17,7 +17,7 @@ echo "Installing PM2 globally via Bun (via bunx)..."
 bun add -g pm2
 
 echo "Installing server dependencies..."
-cd "bible-app/server"
+cd bible-app/server
 bun install
 
 echo "✅ Install phase complete."
