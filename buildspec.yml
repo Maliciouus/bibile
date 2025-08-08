@@ -37,6 +37,7 @@ phases:
       - cp appspec.yml bundle/
       - cp -r scripts bundle/
       - cp -r server bundle/
+      - cd bundle
       - zip -r ../bundle.zip ./
       - echo "bundle.zip ready for deployment"
 
