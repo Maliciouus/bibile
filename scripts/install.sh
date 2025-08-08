@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e 
 
+APP_DIR="/home/ec2-user/bible.app"
+
 echo "Installing Bun..."
 curl -fsSL https://bun.sh/install | bash
 
