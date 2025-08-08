@@ -18,6 +18,7 @@ phases:
       - ls -la
       - cd ..
       - cd admin
+      - cat package.json
       - bun run build
       - ls -la
       - cat package.json
