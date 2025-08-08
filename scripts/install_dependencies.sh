@@ -1,12 +1,23 @@
 #!/bin/bash
+set -e  # Exit immediately on error
+
+DEPLOY_DIR="/opt/myapp"  # Update if you use a different path
 
 echo "Installing Bun..."
 curl -fsSL https://bun.sh/install | bash
-export PATH="$HOME/.bun/bin:$PATH"
 
-echo "Installing PM2..."
-bun install pm2 -g
+# Bun installs to /root/.bun in CodeDeploy (since it's run as root)
+export BUN_INSTALL="/root/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Verify bun is available
+echo "Bun version: $(bun --version)"
+
+echo "Installing PM2 globally via Bun (via bunx)..."
+bun add -g pm2
 
 echo "Installing server dependencies..."
-cd /home/ec2-user/bible-app/server
+cd "$DEPLOY_DIR/server"
 bun install
+
+echo "✅ Install phase complete."
