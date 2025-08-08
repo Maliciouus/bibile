@@ -4,6 +4,11 @@ files:
   - source: /
     destination: /home/ec2-user/bible-app/
 hooks:
+oreInstall:
+  BeforeInstall:
+    - location: scripts/chmod.sh
+      timeout: 300
+      runas: ec2-user
   AfterInstall:
     - location: scripts/install.sh
       timeout: 300

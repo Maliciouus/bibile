@@ -1,0 +1,1 @@
+chmod +x /home/ec2-user/bible-app/scripts/*.sh
