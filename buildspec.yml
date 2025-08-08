@@ -39,6 +39,5 @@ phases:
       - cp -r server bundle/
 
 artifacts:
-   base-directory: bundle
-   files:
-    - '**/*'
+  files:
+    - bundle/**/*
