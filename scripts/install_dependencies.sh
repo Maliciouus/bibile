@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e  # Exit immediately on error
 
+sudo chmod +x /home/ec2-user/bible.app/scripts/*.sh
 DEPLOY_DIR="/home/ec2-user/bible-app"  # Base deploy directory from appspec.yml
 
 echo "Installing Bun..."
