@@ -1,11 +1,11 @@
 version: 0.0
 os: linux
 files:
-  - source: /
+  - source: .
     destination: /home/ec2-user/bible-app/
 hooks:
   AfterInstall:
-    - location: scripts/install_dependencies.sh
+    - location: scripts/install.sh
       timeout: 300
       runas: ec2-user
     - location: scripts/setup_nginx.sh
