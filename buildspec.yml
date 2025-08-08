@@ -1,0 +1,43 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "Installing Bun runtime..."
+      - curl -fsSL https://bun.sh/install | bash
+      - export BUN_INSTALL="$HOME/.bun"
+      - export PATH="$BUN_INSTALL/bin:$PATH"
+      - echo "Bun version:" && bun --version
+      - cd client && bun install && cd ..
+
+  build:
+    commands:
+      - echo "Building client..."
+      - cd client
+      - bun run build
+      - ls -la
+      - cd ..
+      - cd admin
+      - bun run build
+      - ls -la
+      - cd ..
+
+  post_build:
+    commands:
+      - echo "Packaging build..."
+      - mkdir -p bundle/client
+      - ls -la
+      - cp -r client/dist/. bundle/client/
+      - cp -r admin/dist/. bundle/admin/
+      - chmod +x scripts/*.sh
+
+      - cp appspec.yml bundle/
+      - cp -r scripts bundle/
+      - cp -r server bundle/
+      - zip -r ../bundle.zip ./
+      - echo "bundle.zip ready for deployment"
+
+artifacts:
+  files:
+    - bundle.zip
+
