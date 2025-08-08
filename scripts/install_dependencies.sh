@@ -1,13 +1,13 @@
 #!/bin/bash
 set -e  # Exit immediately on error
 
-DEPLOY_DIR="/opt/myapp"  # Update if you use a different path
+DEPLOY_DIR="/home/ec2-user/bible-app"  # Base deploy directory from appspec.yml
 
 echo "Installing Bun..."
 curl -fsSL https://bun.sh/install | bash
 
-# Bun installs to /root/.bun in CodeDeploy (since it's run as root)
-export BUN_INSTALL="/root/.bun"
+# Bun installs to /home/ec2-user/.bun since run as ec2-user
+export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Verify bun is available
