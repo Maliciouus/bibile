@@ -24,7 +24,7 @@ if subprocess.run("which nginx", shell=True).returncode != 0:
     run("sudo yum install -y nginx")
 
 # 3. Install unzip & curl (needed for Bun install)
-run("sudo yum install -y unzip curl")
+run("sudo yum install -y unzip curl --allowerasing")
 
 # 4. Install Bun (if not already installed)
 if not Path(BUN_PATH).exists():
