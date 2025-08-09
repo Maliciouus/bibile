@@ -29,8 +29,8 @@ run("sudo yum install -y unzip curl --allowerasing")
 # 4. Install Bun (if not already installed)
 if not Path(BUN_PATH).exists():
     run("curl -fsSL https://bun.sh/install | bash")
-    run(f'echo \'export BUN_INSTALL="$HOME/.bun"\' >> ~/.bashrc', critical=False)
-    run(f'echo \'export PATH="{BUN_PATH}:$PATH"\' >> ~/.bashrc', critical=False)
+    run("""fecho \'export BUN_INSTALL="$HOME/.bun"\' >> ~/.bashrc""", critical=False)
+    run(f"""echo \'export PATH="{BUN_PATH}:$PATH"\' >> ~/.bashrc""", critical=False)
 
 # Add Bun to current session PATH
 os.environ["PATH"] = f"{BUN_PATH}:{os.environ['PATH']}"
@@ -42,7 +42,7 @@ run(f"{BUN_PATH}/bun add -g pm2")
 nginx_conf = f"""
 server {{
     listen 80;
-    server_name _;
+    server_name localhost;
 
     root /usr/share/nginx/html;
     index index.html;
@@ -70,11 +70,12 @@ run("sudo systemctl restart nginx")
 
 # 7. Deploy frontend (replace with your actual build folder)
 run("sudo mkdir -p /usr/share/nginx/html")
+run("ls -la ./bundle")
 run("sudo cp -r ./bundle/* /usr/share/nginx/html/", critical=False)
 
 # 8. Start backend using PM2 with Bun
 # Replace src/index.ts with your backend entry file
-run(f"{BUN_PATH}/pm2 start src/index.ts --name server --interpreter bun")
+run(f"{BUN_PATH}/pm2 start server --name server --interpreter bun")
 run(f"{BUN_PATH}/pm2 save")
 run(f"{BUN_PATH}/pm2 startup systemd -u ec2-user --hp /home/ec2-user")
 
