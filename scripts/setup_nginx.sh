@@ -53,7 +53,7 @@ server {{
     }}
 
     location /api/ {{
-        proxy_pass http://127.0.0.1:4001/;
+        proxy_pass http://13.232.73.249:4001/;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
