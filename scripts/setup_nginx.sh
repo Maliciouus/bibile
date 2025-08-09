@@ -21,7 +21,6 @@ run("sudo yum update -y")
 
 # 2. Install Nginx
 if subprocess.run("which nginx", shell=True).returncode != 0:
-    run("sudo amazon-linux-extras enable nginx1")
     run("sudo yum install -y nginx")
 
 # 3. Install unzip & curl (needed for Bun install)
