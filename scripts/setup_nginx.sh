@@ -72,7 +72,7 @@ run("sudo systemctl restart nginx")
 
 # 8. Start backend using PM2 with Bun
 # Adjust path if your backend is in /opt/bundle/server
-run(f"cd /opt/bundle/server/src && pm2 start index.ts --name myapi --interpreter /root/.bun/bin/bun")
+run(f"cd /opt/bundle/server/src && {BUN_PATH}/pm2 start index.ts --name myapi --interpreter {BUN_PATH}/bun")
 
 run(f"{BUN_PATH}/pm2 save")
 run(f"{BUN_PATH}/pm2 startup systemd -u ec2-user --hp /home/ec2-user")
