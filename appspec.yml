@@ -2,21 +2,9 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/bible-app/
+    destination: /var/www/html
 hooks:
-oreInstall:
-  BeforeInstall:
-    - location: scripts/chmod.sh
-      timeout: 300
-      runas: ec2-user
   AfterInstall:
-    - location: scripts/install.sh
-      timeout: 300
-      runas: ec2-user
     - location: scripts/setup_nginx.sh
       timeout: 300
       runas: root
-  ApplicationStart:
-    - location: scripts/start_server.sh
-      timeout: 300
-      runas: ec2-user
