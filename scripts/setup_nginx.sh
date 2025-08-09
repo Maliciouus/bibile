@@ -69,9 +69,8 @@ run("sudo systemctl enable nginx")
 run("sudo systemctl restart nginx")
 
 # 7. Deploy frontend (replace with your actual build folder)
-run("sudo mkdir -p /usr/share/nginx/html/client  usr/share/nginx/html/admin")
-run("sudo cp -r ./opt/client/* /usr/share/nginx/html/client", critical=False)
-un("sudo cp -r ./opt/admin/* /usr/share/nginx/html/admin", critical=False)
+run("sudo mkdir -p /usr/share/nginx/html/bundle")
+run("sudo cp -r ./opt/bundle/* /usr/share/nginx/html/bundle", critical=False)
 # 8. Start backend using PM2 with Bun
 # Replace src/index.ts with your backend entry file
 run(f"{BUN_PATH}/pm2 start server --name server --interpreter bun")
