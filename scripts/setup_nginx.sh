@@ -75,7 +75,7 @@ run("sudo cp -r ./opt/bundle/* /opt/bundle", critical=False)
 
 # 8. Start backend using PM2 with Bun
 # Adjust path if your backend is in /opt/bundle/server
-run(f"cd /opt/bundle/server/src/ && {BUN_PATH}/pm2 start index.tx --name server --interpreter bun")
+run(f"cd /opt/bundle/server/src/ && {BUN_PATH}/pm2 start index.ts --name my-api --interpreter bun")
 run(f"{BUN_PATH}/pm2 save")
 run(f"{BUN_PATH}/pm2 startup systemd -u ec2-user --hp /home/ec2-user")
 
