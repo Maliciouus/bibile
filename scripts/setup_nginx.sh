@@ -36,7 +36,7 @@ if not Path(BUN_PATH).exists():
 os.environ["PATH"] = f"{BUN_PATH}:{os.environ['PATH']}"
 
 # 5. Install PM2 via Bun
-run(f"sudo /home/ec2-user/.bun/bin/bun add -g pm2")
+run(f"cd /home/ec2-user/.bun/bin/bun add -g pm2")
 # 6. Nginx config for frontend + API proxy
 # Change root from default to /opt/bundle/client
 nginx_conf = f"""
