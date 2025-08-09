@@ -69,9 +69,6 @@ run("sudo nginx -t")
 run("sudo systemctl enable nginx")
 run("sudo systemctl restart nginx")
 
-# 7. Deploy frontend into /opt/bundle
-run("sudo mkdir -p /opt/bundle")
-run("sudo cp -r ./opt/bundle/* /opt/bundle", critical=False)
 
 # 8. Start backend using PM2 with Bun
 # Adjust path if your backend is in /opt/bundle/server
