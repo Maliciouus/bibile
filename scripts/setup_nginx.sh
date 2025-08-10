@@ -36,18 +36,18 @@ if not Path(BUN_PATH).exists():
 os.environ["PATH"] = f"{BUN_PATH}:{os.environ['PATH']}"
 
 # 5. Install PM2 via Bun
-run(f"{bun_bin}/bun add --global pm2")
+run(f"{BUN_PATH}/bun add --global pm2")
 
-# 4. Create a fake 'node' command to redirect to Bun
+# 6. Create a fake 'node' command to redirect to Bun
 fake_node_path = "/usr/local/bin/node"
 if not Path(fake_node_path).exists():
-    run(f"sudo ln -s {bun_bin}/bun {fake_node_path}")
+    run(f"sudo ln -s {BUN_PATH}/bun {fake_node_path}")
 
-# 5. Verify installation
-run(f"{bun_bin}/pm2 --version")
+# 7. Verify PM2 installed
+run(f"{BUN_PATH}/pm2 --version")
 print("\033[92m✔ Bun + PM2 installed without Node.js!\033[0m")
-# 6. Nginx config for frontend + API proxy
-# Change root from default to /opt/bundle/client
+
+# 8. Write Nginx config
 nginx_conf = f"""
 server {{
     listen 80;
@@ -77,12 +77,13 @@ run("sudo nginx -t")
 run("sudo systemctl enable nginx")
 run("sudo systemctl restart nginx")
 
-
-# 8. Start backend using PM2 with Bun
-# Adjust path if your backend is in /opt/bundle/server
-run(f"cd /opt/bundle/server/src/pm2 start index.ts --name myapi --interpreter")
-
-run(f"{BUN_PATH}/pm2 save")
-run(f"{BUN_PATH}/pm2 startup systemd -u ec2-user --hp /home/ec2-user")
+# 9. Start backend using PM2 with Bun
+backend_path = "/opt/bundle/server/src"
+if Path(backend_path).exists():
+    run(f"cd {backend_path} && {BUN_PATH}/pm2 start index.ts --name myapi --interpreter {BUN_PATH}/bun")
+    run(f"{BUN_PATH}/pm2 save")
+    run(f"{BUN_PATH}/pm2 startup systemd -u ec2-user --hp /home/ec2-user")
+else:
+    print(f"\033[93m⚠ Warning:\033[0m Backend path {backend_path} does not exist. Skipping PM2 startup.")
 
 print("\033[92m✅ Deployment completed successfully!\033[0m")
