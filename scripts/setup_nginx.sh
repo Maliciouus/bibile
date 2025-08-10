@@ -13,6 +13,25 @@ def run(cmd, critical=True):
         else:
             print(f"\033[93m⚠ Warning:\033[0m {cmd} failed but continuing...")
 
+# 0. Install AWS CodeDeploy agent if not already installed
+def install_codedeploy_agent():
+    print("\033[94m▶ Checking for CodeDeploy Agent...\033[0m")
+    if subprocess.run("which codedeploy-agent", shell=True).returncode == 0:
+        print("\033[92m✔ CodeDeploy Agent already installed.\033[0m")
+        return
+
+    print("\033[94m▶ Installing CodeDeploy Agent...\033[0m")
+    run("sudo yum install -y ruby")
+    run("cd /tmp && curl -O https://aws-codedeploy-ap-south-1.s3.amazonaws.com/latest/install")
+    run("chmod +x /tmp/install")
+    run("sudo /tmp/install auto")
+    run("sudo systemctl enable codedeploy-agent")
+    run("sudo systemctl start codedeploy-agent")
+    print("\033[92m✔ CodeDeploy Agent installed and running.\033[0m")
+
+# Start with CodeDeploy agent setup
+install_codedeploy_agent()
+
 # Bun install path
 BUN_PATH = os.path.expanduser("~/.bun/bin")
 
@@ -61,7 +80,7 @@ server {{
     }}
 
     location /api/ {{
-        proxy_pass http://13.201.123.83:4001/;
+        proxy_pass http://13.233.178.201:4001/;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
