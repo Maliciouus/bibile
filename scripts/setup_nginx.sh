@@ -61,7 +61,7 @@ server {{
     }}
 
     location /api/ {{
-        proxy_pass http://43.205.212.219:4001/;
+        proxy_pass http://65.1.109.175:4001/;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
