@@ -28,7 +28,7 @@ run("sudo yum install -y unzip curl --allowerasing")
 
 # 4. Install Bun (if not already installed)
 if not Path(BUN_PATH).exists():
-    run("sudo -ucurl -fsSL https://bun.sh/install | bash")
+    run("curl -fsSL https://bun.sh/install | bash")
     run("""echo 'export BUN_INSTALL="$HOME/.bun"' >> ~/.bashrc""", critical=False)
     run(f"""echo 'export PATH="{BUN_PATH}:$PATH"' >> ~/.bashrc""", critical=False)
 
