@@ -9,7 +9,7 @@ def run(cmd, critical=True):
     result = subprocess.run(cmd, shell=True, executable="/bin/bash")
     if result.returncode != 0:
         if critical:
-            sys.exit(f"\033[91m❌ Failed:\033[0m {cmd}")
+            sys.exit(f"\033[91m Failed:\033[0m {cmd}")
         else:
             print(f"\033[93m⚠ Warning:\033[0m {cmd} failed but continuing...")
 
@@ -28,7 +28,7 @@ run("sudo yum install -y unzip curl --allowerasing")
 
 # 4. Install Bun (if not already installed)
 if not Path(BUN_PATH).exists():
-    run("curl -fsSL https://bun.sh/install | bash")
+    run("sudo -ucurl -fsSL https://bun.sh/install | bash")
     run("""echo 'export BUN_INSTALL="$HOME/.bun"' >> ~/.bashrc""", critical=False)
     run(f"""echo 'export PATH="{BUN_PATH}:$PATH"' >> ~/.bashrc""", critical=False)
 
@@ -61,7 +61,7 @@ server {{
     }}
 
     location /api/ {{
-        proxy_pass http://13.201.123.83:4001/;
+        proxy_pass http://43.205.212.219:4001/;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -86,4 +86,4 @@ if Path(backend_path).exists():
 else:
     print(f"\033[93m⚠ Warning:\033[0m Backend path {backend_path} does not exist. Skipping PM2 startup.")
 
-print("\033[92m✅ Deployment completed successfully!\033[0m")
+print("\033[92m Deployment completed successfully!\033[0m")
