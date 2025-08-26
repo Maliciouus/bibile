@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /opt/bundle
+    destination: /var/www/bundle
 hooks:
   AfterInstall:
     - location: scripts/setup_nginx.sh

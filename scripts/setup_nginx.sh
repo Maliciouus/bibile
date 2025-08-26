@@ -51,7 +51,7 @@ print("\033[92m✔ Bun + PM2 installed without Node.js!\033[0m")
 nginx_conf = f"""
 server {{
     listen 80;
-    server_name localhost;
+    server_name 65.0.74.170;
 
     root /opt/bundle/client;
     index index.html;
@@ -78,7 +78,7 @@ run("sudo systemctl enable nginx")
 run("sudo systemctl restart nginx")
 
 # 9. Start backend using PM2 with Bun
-backend_path = "/opt/bundle/server/src"
+backend_path = "/opt/bundle/server/src/api/
 if Path(backend_path).exists():
     run(f"{backend_path}bun i")
     run(f"cd {backend_path} && {BUN_PATH}/pm2 start index.ts --name myapi --interpreter {BUN_PATH}/bun")
