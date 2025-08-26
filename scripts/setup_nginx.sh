@@ -48,7 +48,7 @@ run(f"{BUN_PATH}/pm2 --version")
 print("\033[92m✔ Bun + PM2 installed without Node.js!\033[0m")
 
 # 8. Write Nginx config
-nginx_conf = f"""
+nginx_conf = f""
 server {{
     listen 80;
     server_name 65.0.74.170;
