@@ -59,9 +59,9 @@ print("\033[92m✔ Bun + PM2 + Node.js LTS + Nginx + Certbot installed!\033[0m")
 nginx_conf = f"""
 server {{
     listen 80;
-    server_name 65.0.74.170;
+    server_name 52.66.150.151;
 
-    root /opt/bundle/client;
+    root /var/www/src/bundle/client;
     index index.html;
 
     location / {{
@@ -87,10 +87,10 @@ run("sudo systemctl enable nginx")
 run("sudo systemctl restart nginx")
 
 # 8. Start backend using PM2 with Bun
-backend_path = "/opt/bundle/server/src/api/"
+backend_path = "/var/www/src/bundle/server/src/api/"
 if Path(backend_path).exists():
     run(f"cd {backend_path} && {BUN_PATH}/bun install")
-    run(f"cd {backend_path} && {BUN_PATH}/pm2 start index.ts --name myapi --interpreter {BUN_PATH}/bun")
+    run(f"cd {backend_path} && {BUN_PATH}/pm2 start bun --name "api" --start {BUN_PATH}/bun")
     run(f"{BUN_PATH}/pm2 save")
     run(f"{BUN_PATH}/pm2 startup systemd -u $USER --hp $HOME")
 else:
