@@ -23,6 +23,10 @@ run("sudo apt-get update -y && sudo apt-get upgrade -y")
 # 2. Install dependencies (nginx, unzip, certbot, curl)
 run("sudo apt-get install -y nginx unzip certbot python3-certbot-nginx curl")
 
+# 3. Prepare application directory
+run("sudo mkdir -p /var/www/src")
+run("sudo chown -R ubuntu:ubuntu /var/www/src")
+
 # 3. Install Bun (if not installed)
 if not Path(BUN_PATH).exists():
     run("curl -fsSL https://bun.sh/install | bash")
