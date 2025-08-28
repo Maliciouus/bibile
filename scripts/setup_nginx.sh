@@ -15,19 +15,18 @@ def run(cmd, critical=True):
 
 HOME = str(Path.home())
 BUN_PATH = f"{HOME}/.bun/bin"
-NVM_DIR = f"{HOME}/.nvm"
 
 # 1. Update & upgrade system
 run("sudo apt-get update -y && sudo apt-get upgrade -y")
 
-# 2. Install dependencies (nginx, unzip, certbot, curl)
+# 2. Install required packages
 run("sudo apt-get install -y nginx unzip certbot python3-certbot-nginx curl")
 
-# 3. Prepare application directory
+# 3. Setup project directory
 run("sudo mkdir -p /var/www/src")
 run("sudo chown -R ubuntu:ubuntu /var/www/src")
 
-# 3. Install Bun (if not installed)
+# 4. Install Bun
 if not Path(BUN_PATH).exists():
     run("curl -fsSL https://bun.sh/install | bash")
     run(f"""echo 'export BUN_INSTALL="{HOME}/.bun"' >> ~/.bashrc""", critical=False)
@@ -35,27 +34,24 @@ if not Path(BUN_PATH).exists():
 
 os.environ["PATH"] = f"{BUN_PATH}:{os.environ['PATH']}"
 
-# 4. Install NVM + Node.js LTS
-if not Path(NVM_DIR).exists():
-    run("curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash")
-    run(f"""echo 'export NVM_DIR="{NVM_DIR}"' >> ~/.bashrc""", critical=False)
-    run(f"""echo '[ -s "$NVM_DIR/nvm.sh" ] && \\. "$NVM_DIR/nvm.sh"' >> ~/.bashrc""", critical=False)
+# 5. Install Node.js (system-wide, avoids nvm issues)
+run("curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -")
+run("sudo apt-get install -y nodejs")
 
-# Load nvm for current session + install Node.js LTS
-os.environ["NVM_DIR"] = NVM_DIR
-run(f"export NVM_DIR={NVM_DIR} && [ -s \"$NVM_DIR/nvm.sh\" ] && \\. \"$NVM_DIR/nvm.sh\" && nvm install --lts && nvm use --lts")
+# Optional: Symlink /usr/bin/node (if needed by subprocesses)
+run("sudo ln -sf $(which node) /usr/bin/node", critical=False)
 
-# 5. Install PM2 using Bun
+# 6. Install PM2 globally via Bun
 run(f"{BUN_PATH}/bun i -g pm2")
 
-# 6. Verify installs
+# 7. Verify installations
 run("nginx -v", critical=False)
 run(f"{BUN_PATH}/bun --version")
 run(f"{BUN_PATH}/pm2 --version")
 
-print("\033[92m✔ Bun + PM2 + Node.js LTS + Nginx + Certbot installed!\033[0m")
+print("\033[92m✔ Bun + PM2 + Node.js + Nginx + Certbot installed!\033[0m")
 
-# 7. Configure Nginx
+# 8. Configure Nginx
 nginx_conf = f"""
 server {{
     listen 80;
@@ -86,14 +82,14 @@ run("sudo nginx -t")
 run("sudo systemctl enable nginx")
 run("sudo systemctl restart nginx")
 
-# 8. Start backend using PM2 with Bun
+# 9. Start backend via PM2 (Bun)
 backend_path = "/var/www/src/bundle/server/src/api/"
 if Path(backend_path).exists():
     run(f"cd {backend_path} && {BUN_PATH}/bun install")
-    run(f"cd {backend_path} && {BUN_PATH}/pm2 start bun --name 'api' --start {BUN_PATH}/bun")
+    run(f"cd {backend_path} && {BUN_PATH}/pm2 start {BUN_PATH}/bun --name 'api'")
     run(f"{BUN_PATH}/pm2 save")
     run(f"{BUN_PATH}/pm2 startup systemd -u $USER --hp $HOME")
 else:
     print(f"\033[93m⚠ Warning:\033[0m Backend path {backend_path} does not exist. Skipping PM2 startup.")
 
-print("\033[92m Deployment completed successfully!\033[0m")
+print("\033[92m✅ Deployment completed successfully!\033[0m")
