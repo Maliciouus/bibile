@@ -37,7 +37,9 @@ phases:
       - cp appspec.yml bundle/
       - cp -r scripts bundle/
       - cp -r server bundle/
+      - cd bundle
+      - zip -r ../deploy.zip .
 
 artifacts:
   files:
-    - bundle/**/*
+    - deploy.zip
